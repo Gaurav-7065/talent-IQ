@@ -1,5 +1,5 @@
 import express from 'express';
-
+import {ENV} from './lib/env.js'
 
 const app=express();    
 
@@ -8,6 +8,11 @@ app.get("/",(req,res)=>{
         message:"success from api"
     })
 })
-app.listen(3000,()=>{
+
+
+// make our app ready for deployment
+
+
+app.listen(ENV.PORT,()=>{
     console.log("backend is running on port 3000");
 })
