@@ -1,18 +1,23 @@
-import express from 'express';
-import {ENV} from './lib/env.js'
+import express from "express";
+import cors from "cors";
+import { ENV } from "./lib/env.js";
 
-const app=express();    
+const app = express();
 
-app.get("/",(req,res)=>{
-    res.status(200).json({
-        message:"success from api"
-    })
-})
+// middleware
+app.use(
+  cors({
+    origin: [ENV.CLIENT_URL, "http://localhost:5173"],
+    credentials: true,
+  })
+);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    message: "success from api",
+  });
+});
 
-// make our app ready for deployment
-
-
-app.listen(ENV.PORT,()=>{
-    console.log("backend is running on port 3000");
-})
+app.listen(ENV.PORT, () => {
+  console.log(`backend is running on port ${ENV.PORT}`);
+});
