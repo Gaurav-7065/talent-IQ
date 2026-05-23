@@ -37,7 +37,7 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
               <LoaderIcon className="size-10 animate-spin text-primary" />
             </div>
           ) : sessions.length > 0 ? (
-            sessions.map((session) => (
+            sessions?.filter(Boolean).map((session) => (
               <div
                 key={session._id}
                 className="card bg-base-200 border-2 border-base-300 hover:border-primary/50"
@@ -58,8 +58,10 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
                             session.difficulty
                           )}`}
                         >
-                          {session.difficulty.slice(0, 1).toUpperCase() +
-                            session.difficulty.slice(1)}
+                          {session.difficulty
+                            ? session.difficulty.slice(0, 1).toUpperCase() +
+                            session.difficulty.slice(1)
+                            : "Unknown"}
                         </span>
                       </div>
 
