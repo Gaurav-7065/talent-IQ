@@ -13,27 +13,12 @@ const app = express();
 // middleware
 app.use(express.json());
 
-// 1. Specify your exact live frontend URL
-const allowedOrigins = [
-  "https://talent-iq-one-self.vercel.app", 
-  "http://localhost:5173" // Keeps local testing working perfectly
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow server-to-server or postman/curl requests (no origin)
-      if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = `CORS Error: The origin ${origin} is not allowed access.`;
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    credentials: true, // 👈 CRITICAL: Allows Clerk authorization cookies to pass safely
+    origin: "https://talent-iq-one-self.vercel.app", 
+    credentials: true, // Allows your authentication cookies/sessions to travel safely
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   })
 );
 app.use(clerkMiddleware());//this add auth field to req object:req.auth();
