@@ -15,9 +15,7 @@ app.use(express.json());
 //credential true meaning=>server allows a browser to include cokkies on request
 app.use(
   cors({
-    origin: [
-      "https://talent-iq-one-self.vercel.app",
-    ],
+    origin: "https://talent-iq-one-self.vercel.app", // Your exact live site
     credentials: true,
   })
 );
