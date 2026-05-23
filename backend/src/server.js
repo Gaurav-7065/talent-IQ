@@ -1,31 +1,24 @@
 import express from "express";
-import cors from "cors";
+import { fileURLToPath } from "url";
 import { ENV } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
-import { serve } from "inngest/express"
-import { inngest,functions } from './lib/inngest.js'
+import cors from "cors";
+import { serve } from "inngest/express";
+import { inngest, functions } from "./lib/inngest.js";
 import { clerkMiddleware } from "@clerk/express";
-import  chatRoutes from "./routes/chatRoutes.js";
-import sessionRoutes from "./routes/sessionRoute.js"
+import chatRoutes from "./routes/chatRoutes.js"
+import sessionRoutes from "./routes/sessionRoutes.js"
 
 const app = express();
 
-// middleware
+// ----------------- MIDDLEWARE -----------------
 app.use(express.json());
-
-app.use(
-  cors({
-    origin: "https://talent-iq-one-self.vercel.app", 
-    credentials: true, // Allows your authentication cookies/sessions to travel safely
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-  })
-);
-app.use(clerkMiddleware());//this add auth field to req object:req.auth();
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use(clerkMiddleware()); // this adds auth field to request object: req.auth()
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
-app.use("/api/chat",chatRoutes);
-app.use("/api/sessions",sessionRoutes)
+app.use("/api/chat", chatRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
