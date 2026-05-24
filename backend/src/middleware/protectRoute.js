@@ -13,14 +13,17 @@ export const protectRoute = [
         });
       }
 
-      const user = await User.findOne({ clerkId: userId });
+      // find user in db by clerk ID
+      let user = await User.findOne({ clerkId: userId });
 
+      // auto create user if not found
       if (!user) {
-        return res.status(404).json({
-          message: "User not found",
+        user = await User.create({
+          clerkId: userId,
         });
       }
 
+      // attach user to req
       req.user = user;
 
       next();
