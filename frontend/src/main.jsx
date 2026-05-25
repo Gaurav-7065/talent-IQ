@@ -14,6 +14,7 @@ if (!PUBLISHABLE_KEY) {
 }
 
 const queryClient = new QueryClient();
+console.log(import.meta.env.VITE_API_URL);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
